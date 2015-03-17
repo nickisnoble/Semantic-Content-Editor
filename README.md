@@ -32,8 +32,11 @@ TODO: Write history
 ## Credits
 
 Design & Development: 
-@nickisnoble
-@pixelbud
+
+[@nickisnoble](http://nicknoble.works)
+
+[@pixelbud](http://garybacon.com)
+
 @retroantix
 
 ## License
