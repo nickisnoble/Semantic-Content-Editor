@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/nickisnoble/Semantic-Content-Editor.png?label=ready&title=Ready)](https://waffle.io/nickisnoble/Semantic-Content-Editor)
 # Semantic Content Plugin for WordPress
 
 A WordPress plugin for building cleanly coded posts from predefined blocks and markdown.
