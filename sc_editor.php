@@ -58,7 +58,7 @@ function sce_init() {
 					'name'		=> 'Markdown',
 					'id'    	=> 'themarkdownboxes',  
 					'type'  	=> 'multibox',
-					'posttype'  => 'section',
+					'posttype'  => 'tbd',
 					'desc'		=> 'Markdown input box'
 				)
 			)
@@ -75,13 +75,15 @@ function sce_init() {
 	    function __construct($meta_box) {
 	    $this->_meta_box = $meta_box;
 	    add_action('admin_menu', array(&$this, 'add'));
-	     
 	    add_action('save_post', array(&$this, 'save'));
 	    }
 	     
 	    // Add meta box for multiple post types
 	    function add() {
 	    foreach ($this->_meta_box['pages'] as $page) {
+	    // remove wpeditor support from all supported post types '$pages' via registered meta 
+	    remove_post_type_support( $page, 'editor' );
+	    // add sce
 	    add_meta_box($this->_meta_box['id'], $this->_meta_box['title'], array(&$this, 'show'), $page, $this->_meta_box['context'], $this->_meta_box['priority']);
 	    }
 	    }
@@ -90,20 +92,15 @@ function sce_init() {
 	    function show() {
 	    global $post;
 	    
-	    // $meta = get_post_meta($post->ID);
-	    // print_r($meta);
-
-
 	    // Use nonce for verification
-	    echo '<input type="hidden" name="sce_meta_box_nonce" value="', wp_create_nonce(basename(__FILE__)), '" />';
-	     
-	    echo '<table class="form-table sce"><tbody>';
+	    echo '<input type="hidden" name="sce_meta_box_nonce" value="', wp_create_nonce(basename(__FILE__)), '" />',
+	    '<table class="form-table sce"><tbody>';
 	    
 	    foreach ($this->_meta_box['fields'] as $field) {
 	    // get current post meta data
 	    $meta = get_post_meta($post->ID, $field['id'], true);
 	     
-	    if(!in_array($field['type'], array('multibox','posts_select'), true )){
+	    if(!in_array($field['type'], array('multibox'), true )){
 		echo '<tr>',
 		'<th style="width:20%"><label for="', $field['id'], '">', $field['name'], '</label></th></tr>',
 		'<tr><td>';
@@ -125,7 +122,7 @@ function sce_init() {
 	                	</span>
 	                <?php
 					echo '<textarea class="multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor,'</textarea>',
-					'<br />', $field['desc'];
+					'<br />', '<sub>',$field['desc'],'</sub>';
 					?>	
 	                
 	                </td>
@@ -133,7 +130,7 @@ function sce_init() {
 		<?php } //end foreach ?> 		
 	            <tr>
 	            	<td>
-	            		<a href="#" id="<?php echo $field['type'].'_'.$field['id'];?>" data-filetype="<?php echo $field['filetype'];?>" class="button addmarkdown_box">+Add a content box</a>
+	            		<a href="#" data-pid="<?php echo $post->ID;?>" id="<?php echo $field['type'].'_'.$field['id'];?>" data-filetype="<?php echo $field['filetype'];?>" class="button addmarkdown_box">+Add a content box</a>
 	            	</td>
 	           </tr>
 			<?php
@@ -237,7 +234,22 @@ function delmeta_callback() {
 }
 add_action('wp_ajax_delmeta', 'delmeta_callback');
 
-function sce_output() {
-	//build
+// include markdown parser
+include( plugin_dir_path( __FILE__ ) . 'lib/inc/Parsedown.php');
+
+// filter the_content to output sce instead
+function sce_content() { 
+    // soo meta
+    $id = get_the_id();
+    $meta = sort_multibox($id,'themarkdownboxes');
+	uasort($meta, "obj_sort");
+	// use parsedown to translate markdown
+	$pdown = new Parsedown();
+	// if you build it...
+	foreach ($meta as $k => $v) {
+		$build .= $pdown->text($v->sceeditor);
+	}
+    return $build;
 }
+add_filter( 'the_content', 'sce_content' ); 
 ?>
