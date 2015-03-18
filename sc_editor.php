@@ -7,10 +7,15 @@
 Plugin Name: Semantic Content Editor
 Plugin URI: 
 Description: A WordPress plugin for building cleanly coded posts from predefined blocks and markdown.
-Version: 1.0
+Version: .01
 Author: Christian Gloss, Nick Noble, Gary bacon
 Author URI: github.com/nickisnoble/Semantic-Content-Editor
 */
+
+// helper sort object by order
+function obj_sort_order($a, $b) {
+	return strnatcmp($a->order, $b->order);
+}
 
 // helper func to build the ordered product multibox object
 function sort_multibox($id,$meta){
@@ -18,21 +23,25 @@ function sort_multibox($id,$meta){
 	
 	error_reporting(E_ERROR);
 	$mfiles=new stdClass();
-		foreach($thismeta as $k => $v){
-			if (strpos($k,$meta) !== false) {
-				$mfile = explode("_", $k);										
-				$mfiles->$mfile[1]->$mfile[3]->$mfile[2]=$v[0];	
-			}
+	
+	foreach($thismeta as $k => $v){
+		if (strpos($k,$meta) !== false) {
+			$mfile = explode("_", $k);										
+			$mfiles->$mfile[1]->$mfile[3]->$mfile[2]=$v[0];	
 		}
-	$sorted = get_object_vars($mfiles->$meta);
-	//print_pre($sorted);
+	}
+	
+	$sorted = get_object_vars($mfiles);
+
 	uasort($sorted, "obj_sort_order");
-	return (object)$sorted;
+	return (object)$sorted[$meta];
 }
 
 function sce_init() {
 	//setup
 
+	wp_enqueue_script('sce_admin_js', plugin_dir_url( __FILE__ ) . 'lib/js/sc_admin.js', array('jquery'), NULL, true);
+	
 	/**
 	 * Register meta box.
 	 *
@@ -47,7 +56,7 @@ function sce_init() {
 			'fields' => array(
 				array(  
 					'name'		=> 'Markdown',
-					'id'    	=> 'markdown_boxes',  
+					'id'    	=> 'themarkdownboxes',  
 					'type'  	=> 'multibox',
 					'posttype'  => 'section',
 					'desc'		=> 'Markdown input box',
@@ -81,7 +90,7 @@ function sce_init() {
 	    // Callback function to show fields in meta box
 	    function show() {
 	    global $post;
-	     
+	    
 	    // Use nonce for verification
 	    echo '<input type="hidden" name="sce_meta_box_nonce" value="', wp_create_nonce(basename(__FILE__)), '" />';
 	     
@@ -101,21 +110,20 @@ function sce_init() {
 			case 'multibox':	
 			$sorted = sort_multibox($post->ID,$field['id']);
 			uasort($sorted, "obj_sort");
-			// WIP chk
-			//echo '<pre>';
-			//print_r($sorted);
-			//echo '</pre>';
+
 			foreach($sorted as $k => $v){
+				// testing purp
+				print_r($v);
 				?>
-				<tr style="border-bottom:1pt dashed #eee;" class="<?php echo $post->ID; ?>">
+				<tr class="<?php echo $post->ID; ?> sce_tr">
 	                
 	                <input class="sce_box order" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_order_'.$k;?>" value="<?php echo $v->order!=NULL ? $v->order : ''; ?>">
 	                <td>
-	                    <span style="height:60px; display:block;">
+	                    <span>
 	                    	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="button delmulti_media">X</a>
 	                	</span>
 	                <?php
-					echo '<textarea name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4" style="width:97%">', $v ? $v : $field['std'], '</textarea>',
+					echo '<textarea class="multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor ? $v->sceeditor : $field['std'], '</textarea>',
 					'<br />', $field['desc'];
 					?>	
 	                
@@ -124,7 +132,7 @@ function sce_init() {
 		<?php } //end foreach ?> 		
 	            <tr>
 	            	<td>
-	            		<a href="#" id="<?php echo $field['type'].'_'.$field['id'];?>" data-filetype="<?php echo $field['filetype'];?>" class="button addmulti_media">+Add a content box</a>
+	            		<a href="#" id="<?php echo $field['type'].'_'.$field['id'];?>" data-filetype="<?php echo $field['filetype'];?>" class="button addmarkdown_box">+Add a content box</a>
 	            	</td>
 	           </tr>
 			<?php
@@ -159,11 +167,7 @@ function sce_init() {
 	    } elseif (!current_user_can('edit_post', $post_id)) {
 	    return $post_id;
 	    }
-	     
-	   /* foreach ($this->_meta_box['fields'] as $field) {
-	    $old = get_post_meta($post_id, $field['id'], true);
-		$new = $_POST[$field['id']];*/
-		
+	     		
 		foreach ($this->_meta_box['fields'] as $field) {
 	    $old = get_post_meta($post_id, $field['id'], true);
 	    if(!is_array($_POST[$field['id']])){
@@ -171,13 +175,7 @@ function sce_init() {
 		}else{
 	    $new = $_POST[$field['id']];
 		}
-	    
-		// if _datetime convert to timestamp
-		if ($field['type'] == 'datetime' && DateTime::createFromFormat('Y, M d', $_POST[$field['id']])) {
-		$date = DateTime::createFromFormat('Y, M d', $_POST[$field['id']]);
-		$new = $date->format('Y-m-d');
-		}
-		  
+	      
 	    if ($new && $new != $old) {
 	    update_post_meta($post_id, $field['id'], $new);
 	    } elseif ('' == $new && $old) {
@@ -196,41 +194,30 @@ function sce_init() {
 // add action for init
 add_action( 'init', 'sce_init' );
 
+function sce_meta_save($post_id) {
+	if (!current_user_can('edit_post', $post_id)) return $post_id;
+	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+	foreach($_POST as $key => $value){
+		$exp_key = explode('_', $key, 3);
+		if($exp_key[1] == 'multibox'){
+		update_post_meta($post_id, $exp_key[1].'_'.$exp_key[2], esc_attr($value)); // meta id created here
+		}
+		if($exp_key[0] == 'multibox'){
+		update_post_meta($post_id, $key, esc_attr($value)); // meta id created here
+		}
+	}
+}
+
+add_action('save_post', 'sce_meta_save');
+
 // CSS  
 function sce_box_css(){
 	global $typenow; 
 	if ( 'post.php' || 'post-new.php' || $typenow == 'post' ) {
-  ?>
-	
-	<style type="text/css">
-		.image-uploader-meta-box-list:after{
-		  display:block;
-		  content:'';
-		  clear:both;	
-		}
-		.image-uploader-meta-box-list li {
-		  float: left;
-		  width: 150px;
-		  height:auto;
-		  text-align: center;
-		  margin: 10px 10px 10px 0;
-		}
-		input.sce_box{
-			width:50%;
-		}
-		.image-uploader-meta-box-list li img{
-			max-width:150px;
-		}
-		a.sce_box-add.none, a.change-image.none, a.remove-image.none, input.sce_box.none{
-			display:none;
-			visibility:hidden;
-		}
-	</style>
-	
-  <?php }
-  }
-add_action('admin_head', 'sce_box_css');
-
+		wp_enqueue_style('sce_admin_css', plugin_dir_url( __FILE__ ) . 'lib/css/sc_admin.css');
+ 	}
+}
+add_action( 'admin_print_styles','sce_box_css' );
 
 function sce_output() {
 	//build
