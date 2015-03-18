@@ -37,7 +37,7 @@ Design & Development:
 
 [@pixelbud](http://garybacon.com)
 
-@retroantix
+[@retroantix](http://cgloss.com)
 
 ## License
 
