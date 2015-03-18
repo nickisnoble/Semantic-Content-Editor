@@ -1,7 +1,7 @@
 <?php
 /**
  * @package sc_editor
- * @version 1
+ * @version .01
  */
 /*
 Plugin Name: Semantic Content Editor
@@ -31,10 +31,10 @@ function sort_multibox($id,$meta){
 		}
 	}
 	
-	$sorted = get_object_vars($mfiles);
+	$sorted = get_object_vars($mfiles->$meta);
 
 	uasort($sorted, "obj_sort_order");
-	return (object)$sorted[$meta];
+	return (object)$sorted;
 }
 
 function sce_init() {
@@ -59,8 +59,7 @@ function sce_init() {
 					'id'    	=> 'themarkdownboxes',  
 					'type'  	=> 'multibox',
 					'posttype'  => 'section',
-					'desc'		=> 'Markdown input box',
-					'std'		=> 'markdown content'
+					'desc'		=> 'Markdown input box'
 				)
 			)
 		),
@@ -91,11 +90,15 @@ function sce_init() {
 	    function show() {
 	    global $post;
 	    
+	    // $meta = get_post_meta($post->ID);
+	    // print_r($meta);
+
+
 	    // Use nonce for verification
 	    echo '<input type="hidden" name="sce_meta_box_nonce" value="', wp_create_nonce(basename(__FILE__)), '" />';
 	     
-	    echo '<table class="form-table">';
-	     
+	    echo '<table class="form-table sce"><tbody>';
+	    
 	    foreach ($this->_meta_box['fields'] as $field) {
 	    // get current post meta data
 	    $meta = get_post_meta($post->ID, $field['id'], true);
@@ -112,18 +115,16 @@ function sce_init() {
 			uasort($sorted, "obj_sort");
 
 			foreach($sorted as $k => $v){
-				// testing purp
-				print_r($v);
 				?>
-				<tr class="<?php echo $post->ID; ?> sce_tr">
+				<tr data-pid="<?php echo $post->ID;?>" class="sce_tr">
 	                
 	                <input class="sce_box order" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_order_'.$k;?>" value="<?php echo $v->order!=NULL ? $v->order : ''; ?>">
 	                <td>
 	                    <span>
-	                    	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="button delmulti_media">X</a>
+	                    	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="button delmulti_box">X</a>
 	                	</span>
 	                <?php
-					echo '<textarea class="multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor ? $v->sceeditor : $field['std'], '</textarea>',
+					echo '<textarea class="multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor,'</textarea>',
 					'<br />', $field['desc'];
 					?>	
 	                
@@ -144,7 +145,7 @@ function sce_init() {
 		}
 	    }
 	     
-	    echo '</table>';
+	    echo '</tbody></table>';
 	    }
 		     
 	    // Save data from meta box
@@ -194,6 +195,7 @@ function sce_init() {
 // add action for init
 add_action( 'init', 'sce_init' );
 
+// save meta->meta data
 function sce_meta_save($post_id) {
 	if (!current_user_can('edit_post', $post_id)) return $post_id;
 	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
@@ -218,6 +220,22 @@ function sce_box_css(){
  	}
 }
 add_action( 'admin_print_styles','sce_box_css' );
+
+//wp admin ajax api functions
+function delmeta_callback() {
+    global $wpdb; // db access
+
+    if(isset($_REQUEST['delmeta'])){
+		$arr = array('order','sceeditor');
+		foreach($arr as $v){
+			$metaID = str_replace("#", $v, $_REQUEST['delmeta']);
+			delete_post_meta($_REQUEST['postID'], $metaID);
+			echo $metaID;
+		}
+	}
+    die();
+}
+add_action('wp_ajax_delmeta', 'delmeta_callback');
 
 function sce_output() {
 	//build
