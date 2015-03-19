@@ -8,7 +8,7 @@ Plugin Name: Semantic Content Editor
 Plugin URI: 
 Description: A WordPress plugin for building cleanly coded posts from predefined blocks and markdown.
 Version: .01
-Author: Christian Gloss, Nick Noble, Gary bacon
+Author: Christian Gloss, Nick Noble, Gary Bacon
 Author URI: github.com/nickisnoble/Semantic-Content-Editor
 */
 
@@ -59,7 +59,7 @@ function sce_init() {
 					'type'  	=> 'multibox',
 					'posttype'  => 'tbd',
 					'desc'		=> 'Markdown input box',
-					'aligns'	=> array('left'=>'lalgn','center'=>'calgn','right'=>'ralgn')
+					'aligns'	=> array('push left'=>'lalgn','no push'=>'calgn','push right'=>'ralgn')
 				)
 			)
 		),
