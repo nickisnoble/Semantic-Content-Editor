@@ -5,3 +5,9 @@
 tr.sce_tr{
 	border-bottom:1pt dashed #eee;
 }
+
+textarea[autoresize] {
+  display: block;
+  overflow: hidden;
+  resize: none;
+}

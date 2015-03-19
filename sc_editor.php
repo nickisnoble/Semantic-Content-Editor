@@ -121,7 +121,7 @@ function sce_init() {
 	                    	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="button delmulti_box">X</a>
 	                	</span>
 	                <?php
-					echo '<textarea class="sce-multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor,'</textarea>',
+					echo '<textarea class="sce-multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4" autoresize>', $v->sceeditor,'</textarea>',
 					'<br />', '<sub>',$field['desc'],'</sub>';
 					?>	
 	                
