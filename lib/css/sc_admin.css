@@ -55,7 +55,8 @@
   box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
 }
 .sce textarea.sce_card-body{
-  min-height: 90px; 
+  min-height: 90px;
+  width: 100%; 
   outline: 0;
   border: 1px solid #eee;
   background-color: #fff;
