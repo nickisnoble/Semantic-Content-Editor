@@ -1,7 +1,7 @@
 <?php
 /**
  * @package sc_editor
- * @version .01
+ * @version 0.0.1
  */
 /*
 Plugin Name: Semantic Content Editor
@@ -116,12 +116,13 @@ function sce_init() {
 				<tr data-pid="<?php echo $post->ID;?>" class="sce_tr">
 	                
 	                <input class="sce_box order" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_order_'.$k;?>" value="<?php echo $v->order!=NULL ? $v->order : ''; ?>">
-	                <td>
-	                    <span>
-	                    	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="button delmulti_box">X</a>
-	                	</span>
+	                <td class="sce_card">
+	                  <header class="sce_card-header">
+											<h3 class="sce_card-title"><?php echo $field['desc'] ?></h3>
+	                  	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="button delmulti_box">X</a>
+	                	</header>
 	                <?php
-					echo '<sub>',$field['desc'],'</sub>','<br />','<textarea class="multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor,'</textarea>';
+					echo '<textarea class="multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor,'</textarea>';
 					
 					echo '<span class="sce_option_label">Align:</span>';	
 	                // loop the aligns
