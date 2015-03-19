@@ -1,7 +1,7 @@
 <?php
 /**
  * @package sc_editor
- * @version .01
+ * @version 0.0.1
  */
 /*
 Plugin Name: Semantic Content Editor
@@ -59,7 +59,7 @@ function sce_init() {
 					'type'  	=> 'multibox',
 					'posttype'  => 'tbd',
 					'desc'		=> 'Markdown input box',
-					'aligns'	=> array('push left'=>'lalgn','no push'=>'calgn','push right'=>'ralgn')
+					'aligns'	=> array('left'=>'lalgn','center'=>'calgn','right'=>'ralgn')
 				)
 			)
 		),
@@ -115,22 +115,23 @@ function sce_init() {
 				?>
 				<tr data-pid="<?php echo $post->ID;?>" class="sce_tr">
 	                
-	                <input class="sce_box order" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_order_'.$k;?>" value="<?php echo $v->order!=NULL ? $v->order : ''; ?>">
-	                <td>
-	                    <span>
-	                    	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="button delmulti_box">X</a>
-	                	</span>
-	                <?php
-					echo '<textarea class="multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor,'</textarea>',
-					'<br />', '<sub>',$field['desc'],'</sub>';
-						
-	                // loop the aligns
-	             	// foreach($field['aligns'] as $ak => $av){
-	             	// echo '<input type="radio" name="'.$field['type'].'_'.$field['id'].'_algn_'.$k.'" value="'.$av.'" '.($av == $v->algn ? ' checked="checked"' : '').'/>';
-	            	// }
-	            	?>
-	                </td>
-	        	</tr>
+          <input class="sce_box order" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_order_'.$k;?>" value="<?php echo $v->order!=NULL ? $v->order : ''; ?>">
+          <td class="sce_card">
+            <header class="sce_card-header">
+							<h3 class="sce_card-title"><?php echo $field['desc'] ?></h3>
+            	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="sce_close delmulti_box">Remove</a>
+          	</header>
+            <?php echo '<textarea class="multibox sce_card-body" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor,'</textarea>'; ?>
+	        	<footer class="sce_card-footer">
+	        		<?php echo '<span class="sce_option_label">Pull:</span>';	
+		            // loop the aligns
+			         	foreach($field['aligns'] as $ak => $av){
+			         		echo '<input type="radio" name="'.$field['type'].'_'.$field['id'].'_algn_'.$k.'" id="'.$ak.'" value="'.$av.'" '.($av == $v->algn ? ' checked="checked"' : '').'/><label for="'.$ak.'">'.$ak.'</label>';
+			        	}
+		        	?>
+	        	</footer>
+          </td>
+      	</tr>
 		<?php } //end foreach ?> 		
 	            <tr>
 	            	<td>

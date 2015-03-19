@@ -1,0 +1,63 @@
+/* Card */
+.sce_card{
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 1px rgba(0,0,0,.04);
+  display: block;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.sce_card-header{
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  margin: 0;
+  cursor: move;
+  .sce_close{
+    color: #aa1000;
+    text-decoration: none;
+    float: right;
+    display: inline-block;
+    padding: 8px 12px;
+    cursor: pointer;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+}
+
+.sce_card-title{
+  font-size: 14px;
+  display: inline-block;
+  padding: 8px 12px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.sce_card-body{
+  display: block;
+  margin: 0;
+  box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.3);
+  padding: 10px;
+  border: none;
+  overflow-y: hidden;
+}
+
+textarea.sce_card-body{
+  border: 1px solid #eee;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+  background-color: #fff;
+  color: #333;
+  outline: 0;
+  transition: .05s border-color ease-in-out;
+  &:focus{
+    border-color: #5b9dd9;
+    box-shadow: 0 0 2px rgba(30,140,190,.8);
+  }
+}
+
+.sce_card-footer{
+  padding: 10px 5px;
+  background: #f5f5f5;
+  border-top: 1px solid #ddd;
+}
