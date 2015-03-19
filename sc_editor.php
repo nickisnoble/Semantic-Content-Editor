@@ -115,7 +115,6 @@ function sce_init() {
 				?>
 				<tr data-pid="<?php echo $post->ID;?>" class="sce_tr">
 	                
-<<<<<<< HEAD
           <input class="sce_box order" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_order_'.$k;?>" value="<?php echo $v->order!=NULL ? $v->order : ''; ?>">
           <td class="sce_card">
             <header class="sce_card-header">
