@@ -30,10 +30,9 @@ function sort_multibox($id,$meta){
 			$mfiles->$mfile[1]->$mfile[3]->$mfile[2]=$v[0];	
 		}
 	}
-	
 	$sorted = get_object_vars($mfiles->$meta);
-
 	uasort($sorted, "obj_sort_order");
+	//print_r($sorted);
 	return (object)$sorted;
 }
 
@@ -59,7 +58,8 @@ function sce_init() {
 					'id'    	=> 'themarkdownboxes',  
 					'type'  	=> 'multibox',
 					'posttype'  => 'tbd',
-					'desc'		=> 'Markdown input box'
+					'desc'		=> 'Markdown input box',
+					'aligns'	=> array('left'=>'lalgn','center'=>'calgn','right'=>'ralgn')
 				)
 			)
 		),
@@ -123,14 +123,18 @@ function sce_init() {
 	                <?php
 					echo '<textarea class="multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor,'</textarea>',
 					'<br />', '<sub>',$field['desc'],'</sub>';
-					?>	
-	                
+						
+	                // loop the aligns
+	             	// foreach($field['aligns'] as $ak => $av){
+	             	// echo '<input type="radio" name="'.$field['type'].'_'.$field['id'].'_algn_'.$k.'" value="'.$av.'" '.($av == $v->algn ? ' checked="checked"' : '').'/>';
+	            	// }
+	            	?>
 	                </td>
 	        	</tr>
 		<?php } //end foreach ?> 		
 	            <tr>
 	            	<td>
-	            		<a href="#" data-pid="<?php echo $post->ID;?>" id="<?php echo $field['type'].'_'.$field['id'];?>" data-filetype="<?php echo $field['filetype'];?>" class="button addmarkdown_box">+Add a content box</a>
+	            		<a href="#" data-pid="<?php echo $post->ID;?>" id="<?php echo $field['type'].'_'.$field['id'];?>" data-filetype="<?php echo $field['filetype'];?>" class="button addmarkdown_box">+Add a Markdown box</a>
 	            	</td>
 	           </tr>
 			<?php
@@ -247,7 +251,9 @@ function sce_content() {
 	$pdown = new Parsedown();
 	// if you build it...
 	foreach ($meta as $k => $v) {
-		$build .= $pdown->text($v->sceeditor);
+		$build .= '<section class="'.$v->algn.'">'.$pdown->text($v->sceeditor).'</section>';
+		// this is the sweet spot... can determine element here from post edit selection via the button used to add
+		// the markdown box, WIP
 	}
     return $build;
 }
