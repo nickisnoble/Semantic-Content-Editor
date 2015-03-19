@@ -1,7 +1,14 @@
-.multibox{
+.sce-multibox{
 	width: 100%;
 }
 
 tr.sce_tr{
 	border-bottom:1pt dashed #eee;
+}
+
+textarea[autoresize] {
+  min-height: 90px;
+  display: block;
+  overflow: hidden;
+  resize: none;
 }
