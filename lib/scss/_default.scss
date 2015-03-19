@@ -1,0 +1,18 @@
+.multibox{
+  width: 100%;
+}
+
+tr.sce_tr{
+  td{
+    background: #eee;
+  }
+  label, 
+  .sce_option_label{
+    text-transform: capitalize;
+    padding: 3px;
+  }
+  input[type="radio"]{
+    margin: 0 0 0 10px;
+  } 
+}
+
