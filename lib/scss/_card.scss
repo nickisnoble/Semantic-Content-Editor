@@ -1,0 +1,27 @@
+/* Card */
+
+.sce_card{
+  background: #F5F5F5;
+  border: 1px solid #DDDDDD;
+  color: #AA1000;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.17);
+  margin: 10px;
+  padding: 0;
+}
+
+.sce_card-header{
+  background: #fff;
+  border: 1px solid #DDDDDD;
+  margin: 0;
+  .sce_close{
+
+  }
+}
+
+.sce_card-title{
+  font-size: 14px;
+  display: inline-block;
+  padding: 8px 12px;
+  margin: 0;
+  line-height: 1.4;
+}

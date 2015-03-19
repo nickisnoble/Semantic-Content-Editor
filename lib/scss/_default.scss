@@ -1,0 +1,29 @@
+.multibox{
+  width: 100%;
+}
+
+tr.sce_tr td{
+  background: #eee;
+}
+
+tr.sce_tr{
+  cursor: move;
+}
+
+tr.sce_tr sub{
+  margin: 0 0 0 10px;
+  float: right;
+}
+
+tr.sce_tr textarea{
+  margin: 10px 0;
+}
+
+tr.sce_tr label, .sce_option_label{
+  text-transform: capitalize;
+  padding: 3px;
+}
+tr.sce_tr input[type="radio"]{
+  margin: 0 0 0 10px;
+} 
+
