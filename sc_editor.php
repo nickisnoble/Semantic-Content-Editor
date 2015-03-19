@@ -59,7 +59,7 @@ function sce_init() {
 					'type'  	=> 'multibox',
 					'posttype'  => 'tbd',
 					'desc'		=> 'Markdown input box',
-					'aligns'	=> array('push left'=>'lalgn','no push'=>'calgn','push right'=>'ralgn')
+					'aligns'	=> array('left'=>'lalgn','center'=>'calgn','right'=>'ralgn')
 				)
 			)
 		),
@@ -121,13 +121,13 @@ function sce_init() {
 	                    	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="button delmulti_box">X</a>
 	                	</span>
 	                <?php
-					echo '<textarea class="multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor,'</textarea>',
-					'<br />', '<sub>',$field['desc'],'</sub>';
-						
+					echo '<sub>',$field['desc'],'</sub>','<br />','<textarea class="multibox" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor,'</textarea>';
+					
+					echo '<span class="sce_option_label">Align:</span>';	
 	                // loop the aligns
-	             	// foreach($field['aligns'] as $ak => $av){
-	             	// echo '<input type="radio" name="'.$field['type'].'_'.$field['id'].'_algn_'.$k.'" value="'.$av.'" '.($av == $v->algn ? ' checked="checked"' : '').'/>';
-	            	// }
+	             	foreach($field['aligns'] as $ak => $av){
+	             		echo '<input type="radio" name="'.$field['type'].'_'.$field['id'].'_algn_'.$k.'" id="'.$ak.'" value="'.$av.'" '.($av == $v->algn ? ' checked="checked"' : '').'/><label for="'.$ak.'">'.$ak.'</label>';
+	            	}
 	            	?>
 	                </td>
 	        	</tr>
