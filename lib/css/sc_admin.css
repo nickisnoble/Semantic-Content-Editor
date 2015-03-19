@@ -1,29 +1,44 @@
 .multibox{
-	width: 100%;
-}
-
-tr.sce_tr td{
-	background: #eee;
+  width: 100%;
 }
 
 tr.sce_tr{
-	border-bottom:2px dashed #fff;
-	cursor: move;
+  cursor: move;
 }
-
-tr.sce_tr sub{
-	margin: 0 0 0 10px;
-	float: right;
+tr.sce_tr td{
+  background: #eee;
 }
-
 tr.sce_tr textarea{
-	margin: 10px 0;
+  margin: 10px 0;
+}
+tr.sce_tr label, tr.sce_tr .sce_option_label{
+  padding: 3px; 
+  text-transform: capitalize;
+}
+tr.sce_tr input[type='radio']{
+  margin: 0 0 0 10px;
 }
 
-tr.sce_tr label, .sce_option_label{
-	text-transform: capitalize;
-	padding: 3px;
+/* Card */
+.sce_card{
+  margin: 10px;
+  padding: 0; 
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.17);
+  color: #aa1000;
 }
-tr.sce_tr input[type="radio"]{
-	margin: 0 0 0 10px;
-} 
+
+.sce_card-header{
+  margin: 0; 
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.sce_card-title{
+  display: inline-block;
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.4;
+}
