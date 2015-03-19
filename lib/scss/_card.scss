@@ -50,6 +50,7 @@ textarea.sce_card-body{
   color: #333;
   outline: 0;
   transition: .05s border-color ease-in-out;
+  min-height: 90px;
   &:focus{
     border-color: #5b9dd9;
     box-shadow: 0 0 2px rgba(30,140,190,.8);

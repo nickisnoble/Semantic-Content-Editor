@@ -115,13 +115,14 @@ function sce_init() {
 				?>
 				<tr data-pid="<?php echo $post->ID;?>" class="sce_tr">
 	                
+<<<<<<< HEAD
           <input class="sce_box order" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_order_'.$k;?>" value="<?php echo $v->order!=NULL ? $v->order : ''; ?>">
           <td class="sce_card">
             <header class="sce_card-header">
 							<h3 class="sce_card-title"><?php echo $field['desc'] ?></h3>
             	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="sce_close delmulti_box">Remove</a>
           	</header>
-            <?php echo '<textarea class="multibox sce_card-body" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4">', $v->sceeditor,'</textarea>'; ?>
+            <?php echo '<textarea class="sce_multibox sce_card-body" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4" autoresize>', $v->sceeditor,'</textarea>'; ?>
 	        	<footer class="sce_card-footer">
 	        		<?php echo '<span class="sce_option_label">Pull:</span>';	
 		            // loop the aligns
