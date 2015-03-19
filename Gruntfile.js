@@ -6,8 +6,7 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         files: {
-          'lib/css/style.css' : 'lib/scss/style.scss',
-          'lib/css/styledown.css' : 'lib/scss/styledown.scss'
+          'lib/css/sc_admin.css' : 'lib/scss/sc_admin.scss'
         }
       }
     },
@@ -16,7 +15,7 @@ module.exports = function(grunt) {
         browsers: ['last 2 versions', 'ie 8', 'ie 9']
       },
       target: {
-        src: 'lib/css/style.css'
+        src: 'lib/css/sc_admin.css'
       },
     },
     csscomb: {
@@ -25,7 +24,7 @@ module.exports = function(grunt) {
       },
       css: {
         files: {
-          'lib/css/style.css': 'lib/css/style.css'
+          'lib/css/sc_admin.css': 'lib/css/sc_admin.css'
         }
       }
     },
