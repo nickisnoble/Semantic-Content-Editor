@@ -48,7 +48,7 @@ function sce_init() {
 	$meta_boxes = array(
 		array(
 			'id' => 'sce_markdown_boxes',
-			'title' => 'Markdown Boxes',
+			'title' => 'Semantic Content Editor',
 			'pages' => array('post','page'),
 			'context' => 'normal',
 			'priority' => 'high',
@@ -57,9 +57,9 @@ function sce_init() {
 					'name'		=> 'Markdown',
 					'id'    	=> 'themarkdownboxes',  
 					'type'  	=> 'multibox',
-					'posttype'  => 'tbd',
+					'blocks'  	=> array('text','aside'),
 					'desc'		=> 'Markdown input box',
-					'aligns'	=> array('left'=>'lalgn','center'=>'calgn','right'=>'ralgn')
+					'aligns'	=> array('left'=>'alignleft','center'=>'aligncenter','right'=>'alignright')
 				)
 			)
 		),
@@ -135,7 +135,12 @@ function sce_init() {
 		<?php } //end foreach ?> 		
 	            <tr>
 	            	<td>
-	            		<a href="#" data-pid="<?php echo $post->ID;?>" id="<?php echo $field['type'].'_'.$field['id'];?>" data-filetype="<?php echo $field['filetype'];?>" class="button addmarkdown_box">+Add a Markdown box</a>
+						<?php	
+			            // loop the aligns
+				         	foreach($field['blocks'] as $type){
+				         		echo '<a href="#" data-pid="'.$post->ID.'" id="'.$field['type'].'_'.$field['id'].'" data-block="'.$type.'" class="button addmarkdown_box">+'.$type.'</a>';
+				        	}
+			        	?>
 	            	</td>
 	           </tr>
 			<?php
@@ -241,6 +246,8 @@ add_action('wp_ajax_delmeta', 'delmeta_callback');
 
 // include markdown parser
 include( plugin_dir_path( __FILE__ ) . 'lib/inc/Parsedown.php');
+// include markdown extra parser
+include( plugin_dir_path( __FILE__ ) . 'lib/inc/ParsedownExtra.php');
 
 // filter the_content to output sce instead
 function sce_content() { 
@@ -249,7 +256,7 @@ function sce_content() {
     $meta = sort_multibox($id,'themarkdownboxes');
 	uasort($meta, "obj_sort");
 	// use parsedown to translate markdown
-	$pdown = new Parsedown();
+	$pdown = new ParsedownExtra();
 	// if you build it...
 	foreach ($meta as $k => $v) {
 		$build .= '<section class="'.$v->algn.'">'.$pdown->text($v->sceeditor).'</section>';
