@@ -27,7 +27,7 @@ TODO: Write usage instructions
 
 ## Development Setup
 
-This project uses [Grunt.js]() to process stylesheets. In order to properly work with on it, you'll need to have [node.js]() installed. 
+This project uses [Grunt.js](http://gruntjs.com/) to process stylesheets. In order to properly work with `npm`, you'll need to have [node.js](https://nodejs.org/) installed. 
 
 When you first clone the repo, run `$ npm install` to install the project dependencies.
 
