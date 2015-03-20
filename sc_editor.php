@@ -124,7 +124,7 @@ function sce_init() {
           	</header>
             <?php echo '<textarea class="sce_multibox sce_card-body" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4" autoresize>', $v->sceeditor,'</textarea>'; ?>
 	        	<footer class="sce_card-footer">
-	        		<?php echo '<span class="sce_option_label">Pull:</span>';	
+	        		<?php echo '<span class="sce_option_label">Alignment:</span>';	
 		            // loop the aligns
 			         	foreach($field['aligns'] as $ak => $av){
 			         		echo '<input type="radio" name="'.$field['type'].'_'.$field['id'].'_algn_'.$k.'" id="'.$ak.'" value="'.$av.'" '.($av == $v->algn ? ' checked="checked"' : '').'/><label for="'.$ak.'">'.$ak.'</label>';
@@ -234,11 +234,12 @@ function delmeta_callback() {
     global $wpdb; // db access
 
     if(isset($_REQUEST['delmeta'])){
-		$arr = array('order','sceeditor');
+		$arr = array('order','sceeditor','type');
 		foreach($arr as $v){
 			$metaID = str_replace("#", $v, $_REQUEST['delmeta']);
-			delete_post_meta($_REQUEST['postID'], $metaID);
-			echo $metaID;
+			if(delete_post_meta($_REQUEST['postID'], $metaID)){
+				echo $metaID;
+			}
 		}
 	}
     die();
