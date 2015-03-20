@@ -256,7 +256,7 @@ function sce_content() {
     $meta = sort_multibox($id,'themarkdownboxes');
 	uasort($meta, "obj_sort");
 	// use parsedown to translate markdown
-	$pdown = new Parsedown();
+	$pdown = new ParsedownExtra();
 	// if you build it...
 	foreach ($meta as $k => $v) {
 		$build .= '<section class="'.$v->algn.'">'.$pdown->text($v->sceeditor).'</section>';
