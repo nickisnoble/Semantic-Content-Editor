@@ -25,6 +25,18 @@ TODO: Write usage instructions
 4. Push to the branch: `git push origin feature/my-new-feature`
 5. Submit a pull request :D
 
+## Development Setup
+
+This project uses [Grunt.js]() to process stylesheets. In order to properly work with on it, you'll need to have [node.js]() installed. 
+
+When you first clone the repo, run `$ npm install` to install the project dependencies.
+
+While working on the project, we have a few commands set up:
+
+`$ grunt` - watches `scss` files for changes, and automatically processes the styles on save.
+
+`$ grunt compile` - runs style processing once.
+
 ## History
 
 TODO: Write history
