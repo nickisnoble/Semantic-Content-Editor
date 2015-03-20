@@ -57,9 +57,9 @@ function sce_init() {
 					'name'		=> 'Markdown',
 					'id'    	=> 'themarkdownboxes',  
 					'type'  	=> 'multibox',
-					'posttype'  => 'tbd',
-					'desc'		=> 'Markdown input box',
-					'aligns'	=> array('left'=>'lalgn','center'=>'calgn','right'=>'ralgn')
+					'blocks'  	=> array('text','aside'),
+					'desc'		=> 'input box',
+					'aligns'	=> array('left'=>'alignleft','center'=>'aligncenter','right'=>'alignright')
 				)
 			)
 		),
@@ -116,9 +116,10 @@ function sce_init() {
 				<tr data-pid="<?php echo $post->ID;?>" class="sce_tr">
 	                
           <input class="sce_box order" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_order_'.$k;?>" value="<?php echo $v->order!=NULL ? $v->order : ''; ?>">
+          <input class="sce_box type" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_type_'.$k;?>" value="<?php echo $v->type!=NULL ? $v->type : 'text'; ?>">
           <td class="sce_card">
             <header class="sce_card-header">
-							<h3 class="sce_card-title"><?php echo $field['desc'] ?></h3>
+				<h3 class="sce_card-title"><?php echo $v->type.' '.$field['desc'] ?></h3>
             	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="sce_close delmulti_box">Remove</a>
           	</header>
             <?php echo '<textarea class="sce_multibox sce_card-body" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4" autoresize>', $v->sceeditor,'</textarea>'; ?>
@@ -135,7 +136,12 @@ function sce_init() {
 		<?php } //end foreach ?> 		
 	            <tr>
 	            	<td>
-	            		<a href="#" data-pid="<?php echo $post->ID;?>" id="<?php echo $field['type'].'_'.$field['id'];?>" data-filetype="<?php echo $field['filetype'];?>" class="button addmarkdown_box">+Add a Markdown box</a>
+						<?php	
+			            // loop the aligns
+				         	foreach($field['blocks'] as $type){
+				         		echo '<a href="#" data-pid="'.$post->ID.'" id="'.$field['type'].'_'.$field['id'].'" data-scetype="'.$type.'" class="button addmarkdown_box">+'.$type.'</a>';
+				        	}
+			        	?>
 	            	</td>
 	           </tr>
 			<?php
