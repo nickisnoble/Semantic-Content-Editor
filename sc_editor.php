@@ -58,8 +58,8 @@ function sce_init() {
 					'id'    	=> 'themarkdownboxes',  
 					'type'  	=> 'multibox',
 					'blocks'  	=> array('text','aside'),
-					'desc'		=> 'Markdown input box',
-					'aligns'	=> array('left'=>'alignleft','center'=>'aligncenter','right'=>'alignright')
+					'desc'		=> 'input box',
+					'aligns'	=> array('left'=>'sce_pull-left','none'=>'sce_pull_none','right'=>'sce_pull-right')
 				)
 			)
 		),
@@ -73,125 +73,125 @@ function sce_init() {
 	     
 	    // create meta box based on given data
 	    function __construct($meta_box) {
-	    $this->_meta_box = $meta_box;
-	    add_action('admin_menu', array(&$this, 'add'));
-	    add_action('save_post', array(&$this, 'save'));
+		    $this->_meta_box = $meta_box;
+		    add_action('admin_menu', array(&$this, 'add'));
+		    add_action('save_post', array(&$this, 'save'));
 	    }
 	     
 	    // Add meta box for multiple post types
 	    function add() {
-	    foreach ($this->_meta_box['pages'] as $page) {
-	    // remove wpeditor support from all supported post types '$pages' via registered meta 
-	    remove_post_type_support( $page, 'editor' );
-	    // add sce
-	    add_meta_box($this->_meta_box['id'], $this->_meta_box['title'], array(&$this, 'show'), $page, $this->_meta_box['context'], $this->_meta_box['priority']);
-	    }
+		    foreach ($this->_meta_box['pages'] as $page) {
+		    // remove wpeditor support from all supported post types '$pages' via registered meta 
+		    remove_post_type_support( $page, 'editor' );
+		    // add sce
+		    add_meta_box($this->_meta_box['id'], $this->_meta_box['title'], array(&$this, 'show'), $page, $this->_meta_box['context'], $this->_meta_box['priority']);
+		    }
 	    }
 	     
 	    // Callback function to show fields in meta box
 	    function show() {
-	    global $post;
-	    
-	    // Use nonce for verification
-	    echo '<input type="hidden" name="sce_meta_box_nonce" value="', wp_create_nonce(basename(__FILE__)), '" />',
-	    '<table class="form-table sce"><tbody>';
-	    
-	    foreach ($this->_meta_box['fields'] as $field) {
-	    // get current post meta data
-	    $meta = get_post_meta($post->ID, $field['id'], true);
-	     
-	    if(!in_array($field['type'], array('multibox'), true )){
-		echo '<tr>',
-		'<th style="width:20%"><label for="', $field['id'], '">', $field['name'], '</label></th></tr>',
-		'<tr><td>';
-		}
-	    switch ($field['type']) {	
-			// multibox  
-			case 'multibox':	
-			$sorted = sort_multibox($post->ID,$field['id']);
-			uasort($sorted, "obj_sort");
-
-			foreach($sorted as $k => $v){
-				?>
-				<tr data-pid="<?php echo $post->ID;?>" class="sce_tr">
-	                
-          <input class="sce_box order" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_order_'.$k;?>" value="<?php echo $v->order!=NULL ? $v->order : ''; ?>">
-          <td class="sce_card">
-            <header class="sce_card-header">
-							<h3 class="sce_card-title"><?php echo $field['desc'] ?></h3>
-            	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="sce_close delmulti_box">Remove</a>
-          	</header>
-            <?php echo '<textarea class="sce_multibox sce_card-body" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4" autoresize>', $v->sceeditor,'</textarea>'; ?>
-	        	<footer class="sce_card-footer">
-	        		<?php echo '<span class="sce_option_label">Pull:</span>';	
-		            // loop the aligns
-			         	foreach($field['aligns'] as $ak => $av){
-			         		echo '<input type="radio" name="'.$field['type'].'_'.$field['id'].'_algn_'.$k.'" id="'.$ak.'" value="'.$av.'" '.($av == $v->algn ? ' checked="checked"' : '').'/><label for="'.$ak.'">'.$ak.'</label>';
-			        	}
-		        	?>
-	        	</footer>
-          </td>
-      	</tr>
-		<?php } //end foreach ?> 		
-	            <tr>
-	            	<td>
-						<?php	
-			            // loop the aligns
-				         	foreach($field['blocks'] as $type){
-				         		echo '<a href="#" data-pid="'.$post->ID.'" id="'.$field['type'].'_'.$field['id'].'" data-block="'.$type.'" class="button addmarkdown_box">+'.$type.'</a>';
-				        	}
-			        	?>
-	            	</td>
-	           </tr>
-			<?php
-			break;
-	    }
-		if($field['type'] != 'multibox'){
-		    echo '</td>',
-		    '</tr>';
-		}
-	    }
-	     
-	    echo '</tbody></table>';
+		    global $post;
+		    
+		    // Use nonce for verification
+		    echo '<input type="hidden" name="sce_meta_box_nonce" value="', wp_create_nonce(basename(__FILE__)), '" />',
+		    '<table class="form-table sce"><tbody>';
+		    
+		    foreach ($this->_meta_box['fields'] as $field) {
+			    // get current post meta data
+			    $meta = get_post_meta($post->ID, $field['id'], true);
+			     
+			    if(!in_array($field['type'], array('multibox'), true )){
+					echo '<tr>',
+					'<th style="width:20%"><label for="', $field['id'], '">', $field['name'], '</label></th></tr>',
+					'<tr><td>';
+				}
+			    switch ($field['type']) {	
+					// multibox  
+					case 'multibox':	
+					$sorted = sort_multibox($post->ID,$field['id']);
+					uasort($sorted, "obj_sort");
+					foreach($sorted as $k => $v){
+						?>
+						<tr data-pid="<?php echo $post->ID;?>" class="sce_tr">
+					                
+				          <input class="sce_box order" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_order_'.$k;?>" value="<?php echo $v->order!=NULL ? $v->order : ''; ?>">
+				          <input class="sce_box type" type="hidden" name="<?php echo $field['type'].'_'.$field['id'].'_type_'.$k;?>" value="<?php echo $v->type!=NULL ? $v->type : 'text'; ?>">
+				          <td class="sce_card">
+				            <header class="sce_card-header">
+								<h3 class="sce_card-title"><?php echo $v->type.' '.$field['desc'] ?></h3>
+				            	<a href="#" id="<?php echo $field['type'].'_'.$field['id'].'_#_'.$k;?>" class="sce_close delmulti_box">Remove</a>
+				          	</header>
+				            <?php echo '<textarea class="sce_multibox sce_card-body" name="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" id="', $field['type'].'_'.$field['id'].'_sceeditor_'.$k, '" cols="60" rows="4" autoresize>', $v->sceeditor,'</textarea>'; ?>
+					        	<footer class="sce_card-footer">
+					        		<?php echo '<span class="sce_option_label">Alignment:</span>';	
+						            // loop the aligns
+							         	foreach($field['aligns'] as $ak => $av){
+							         		echo '<input type="radio" name="'.$field['type'].'_'.$field['id'].'_algn_'.$k.'" id="'.$ak.'" value="'.$av.'" '.($av == $v->algn || (!$v->algn && $ak == 'none')  ? ' checked="checked"' : '').'/><label for="'.$ak.'">'.$ak.'</label>';
+							        	}
+						        	?>
+					        	</footer>
+				          </td>
+				      	</tr>
+				<?php } //end foreach ?> 		
+			            <tr>
+			            	<td>
+								<?php	
+					            // loop the aligns
+						         	foreach($field['blocks'] as $type){
+						         		echo '<a href="#" data-pid="'.$post->ID.'" id="'.$field['type'].'_'.$field['id'].'" data-scetype="'.$type.'" class="button addmarkdown_box">+'.$type.'</a>';
+						        	}
+					        	?>
+			            	</td>
+			           </tr>
+					<?php
+					break;
+			    } // end switch
+				if($field['type'] != 'multibox'){
+				    echo '</td>',
+				    '</tr>';
+				}
+		    }
+		     
+		    echo '</tbody></table>';
 	    }
 		     
 	    // Save data from meta box
 	    function save($post_id) {
-	    // verify nonce
-	    if (!wp_verify_nonce($_POST['sce_meta_box_nonce'], basename(__FILE__))) {
-	    return $post_id;
-	    }
+		    // verify nonce
+		    if (!wp_verify_nonce($_POST['sce_meta_box_nonce'], basename(__FILE__))) {
+		    	return $post_id;
+		    }
 	     
-	    // check autosave
-	    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-	    return $post_id;
-	    }
+		    // check autosave
+		    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+		    	return $post_id;
+		    }
 	     
-	    // check permissions
-	    if ('page' == $_POST['post_type']) {
-	    if (!current_user_can('edit_page', $post_id)) {
-	    return $post_id;
-	    }
-	    } elseif (!current_user_can('edit_post', $post_id)) {
-	    return $post_id;
-	    }
+		    // check permissions
+		    if ('page' == $_POST['post_type']) {
+			    if (!current_user_can('edit_page', $post_id)) {
+			    return $post_id;
+				}
+		    } elseif (!current_user_can('edit_post', $post_id)) {
+		    	return $post_id;
+		    }
 	     		
-		foreach ($this->_meta_box['fields'] as $field) {
-	    $old = get_post_meta($post_id, $field['id'], true);
-	    if(!is_array($_POST[$field['id']])){
-	    $new = html_entity_decode($_POST[$field['id']]);
-		}else{
-	    $new = $_POST[$field['id']];
-		}
+			foreach ($this->_meta_box['fields'] as $field) {
+			    $old = get_post_meta($post_id, $field['id'], true);
+			    if(!is_array($_POST[$field['id']])){
+			    $new = html_entity_decode($_POST[$field['id']]);
+				}else{
+			    $new = $_POST[$field['id']];
+				}
 	      
-	    if ($new && $new != $old) {
-	    update_post_meta($post_id, $field['id'], $new);
-	    } elseif ('' == $new && $old) {
-			delete_post_meta($post_id, $field['id'], $old);
-	    }	
+			    if ($new && $new != $old) {
+			    update_post_meta($post_id, $field['id'], $new);
+			    } elseif ('' == $new && $old) {
+					delete_post_meta($post_id, $field['id'], $old);
+			    }	
+	    	}
 	    }
-	    }
-	}
+	}// end class
 
 	if($meta_boxes){
 		foreach ($meta_boxes as $meta_box) {
@@ -233,11 +233,12 @@ function delmeta_callback() {
     global $wpdb; // db access
 
     if(isset($_REQUEST['delmeta'])){
-		$arr = array('order','sceeditor');
+		$arr = array('order','sceeditor','type');
 		foreach($arr as $v){
 			$metaID = str_replace("#", $v, $_REQUEST['delmeta']);
-			delete_post_meta($_REQUEST['postID'], $metaID);
-			echo $metaID;
+			if(delete_post_meta($_REQUEST['postID'], $metaID)){
+				echo $metaID;
+			}
 		}
 	}
     die();
@@ -248,6 +249,14 @@ add_action('wp_ajax_delmeta', 'delmeta_callback');
 include( plugin_dir_path( __FILE__ ) . 'lib/inc/Parsedown.php');
 // include markdown extra parser
 include( plugin_dir_path( __FILE__ ) . 'lib/inc/ParsedownExtra.php');
+
+// semantic wrapper switchm // WIP
+// function wrapitup($build, $v){
+// 	switch ($field['type']) {	
+// 			// multibox  
+// 			case 'multibox':
+
+// }
 
 // filter the_content to output sce instead
 function sce_content() { 
