@@ -1,15 +1,15 @@
 <?php
 /**
  * @package sc_editor
- * @version 0.0.1
+ * @version 0.1.0
  */
 /*
 Plugin Name: Semantic Content Editor
-Plugin URI: 
+Plugin URI: http://github.com/nickisnoble/Semantic-Content-Editor
 Description: A WordPress plugin for building cleanly coded posts from predefined blocks and markdown.
-Version: .01
+Version: 0.1.0
 Author: Christian Gloss, Nick Noble, Gary Bacon
-Author URI: github.com/nickisnoble/Semantic-Content-Editor
+Author URI: http://github.com/nickisnoble/Semantic-Content-Editor
 */
 
 // helper sort object by order
