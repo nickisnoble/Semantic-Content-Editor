@@ -7,15 +7,14 @@ A WordPress plugin for building cleanly coded posts from predefined blocks and m
 - Feel like native WordPress
 - Be easily extensible
 - Utilize Markdown formatting to it's fullest
+- Allow crafting of content without need for full stylistic control
 - Store content efficiently
 
 ## Getting Started
 
-TODO: Describe the installation process
-
-## Usage
-
-TODO: Write usage instructions
+1. Backup your wordpress content, this replaces the default editor on posts
+1. Install and activate as a plugin
+1. Write posts with markdown!
 
 ## Contributing
 
@@ -25,7 +24,7 @@ TODO: Write usage instructions
 4. Push to the branch: `git push origin feature/my-new-feature`
 5. Submit a pull request :D
 
-## Development Setup
+### Development Setup
 
 This project uses [Grunt.js](http://gruntjs.com/) to process stylesheets. In order to properly work with `npm`, you'll need to have [node.js](https://nodejs.org/) installed. 
 
@@ -39,7 +38,13 @@ While working on the project, we have a few commands set up:
 
 ## History
 
-TODO: Write history
+**v0.1.0-beta** - Built the basic prototype, includes the ability to:
+
+- add and remove blocks
+- reorder block via drag and drop
+- write & render Markdown, including GitHub flavored & MD Extra
+- save as markdown in post meta
+- optionally add alignment classes to blocks
 
 ## Credits
 
