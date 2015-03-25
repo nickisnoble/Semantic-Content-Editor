@@ -1,6 +1,6 @@
 {
   "name": "Semantic-Content-Editor",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A semantic content editing plugin for WordPress",
   "main": "sc_editor.php",
   "repository": {
